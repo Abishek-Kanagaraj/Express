@@ -1,16 +1,26 @@
 const express = require('express')
 const app = express()
 const path = require('path')
-const PORT = process.env.PORT || 3001;
+const env = require('dotenv').config()
+const cookie = require('cookie-parser')
+const cors = require('cors');
+const PORT = process.env.PORT;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views', 'subDir'));
+app.set('view engine', 'pug');
 
 // custom middleware logger
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.path}`)
     next();
 })
+
+// Cross Origin Resource Sharing 
+app.use(cors());
 
 // reuestTime middleware function
 const requestTime = (req, res, next) => {
@@ -34,6 +44,8 @@ app.use('/subdir', express.static(path.join(__dirname, '/public')));
 
 app.use('/subdir', indexRouter)
 app.use('/users', usersRouter)
+
+app.use(cookie())
 
 
 app.get('^/$|/index(.html)?', (req, res) => {
@@ -64,6 +76,9 @@ const three = (req, res) => {
 
 app.get('/chain(.html)?', [one, two, three]);
 
+app.get('/cookie', (req, res) => {
+    res.cookie('name', 'Abishek').send('Setting Cookie!!');
+})
 
 app.get('/*', (req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))

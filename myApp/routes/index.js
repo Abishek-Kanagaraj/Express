@@ -3,10 +3,11 @@ const router = express.Router();
 const path = require('path');
 
 router.get('^/$|index(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'subDir', 'index.html'))
+    res.render('index', { title: 'SubDir Index', message: 'Welcome to SubDirectory Index' });
+
 })
 router.get('/test(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'subDir', 'test.html'))
+    res.render('test', { title: 'SubDir Test', message: 'Welcome to SubDirectory Test...' });
 })
 
 

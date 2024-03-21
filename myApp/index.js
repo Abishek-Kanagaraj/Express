@@ -6,8 +6,8 @@ const cookie = require('cookie-parser')
 const cors = require('cors');
 const PORT = process.env.PORT;
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./src/routes/index');
+var usersRouter = require('./src/routes/users');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views', 'subDir'));
@@ -39,8 +39,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // serve static files
-app.use('/', express.static(path.join(__dirname, '/public')));
-app.use('/subdir', express.static(path.join(__dirname, '/public')));
+app.use('/', express.static(path.join(__dirname, 'src', '/public')));
+app.use('/subdir', express.static(path.join(__dirname, 'src', '/public')));
 
 app.use('/subdir', indexRouter)
 app.use('/users', usersRouter)
@@ -51,10 +51,10 @@ app.use(cookie())
 app.get('^/$|/index(.html)?', (req, res) => {
     // res.send("Hello World!")
     // res.sendFile("./views/index.html", { root: __dirname })
-    res.sendFile(path.join(__dirname, 'views', 'index.html'))
+    res.sendFile(path.join(__dirname, 'src', 'views', 'index.html'))
 });
 app.get('/new-page(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'newPage.html'))
+    res.sendFile(path.join(__dirname, 'src', 'views', 'newPage.html'))
 });
 app.get('/back(.html)?', (req, res) => {
     res.redirect(301, '/new-page.html');//302 by default
@@ -81,7 +81,7 @@ app.get('/cookie', (req, res) => {
 })
 
 app.get('/*', (req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
+    res.status(404).sendFile(path.join(__dirname, 'src', 'views', '404.html'))
 });
 
 
